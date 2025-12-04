@@ -21,3 +21,37 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('EcoMission App')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => HabitTrackingScreen()));
+              },
+              child: Text("Track Eco Habits"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => LearningScreen()));
+              },
+              child: Text("Learning Section"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => EventMapScreen()));
+              },
+              child: Text("Clean-Up Events Map"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
