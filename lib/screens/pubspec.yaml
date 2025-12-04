@@ -1,0 +1,46 @@
+super.initState();
+    loadHabits();
+  }
+
+  Future<void> loadHabits() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('user_habits')
+        .doc('userId-today')
+        .get();
+
+    if (doc.exists) {
+      setState(() {
+        habits = Map<String, bool>.from(doc.data()!['habits']);
+      });
+    }
+  }
+
+  void updateHabit(String key, bool value) {
+    setState(() => habits[key] = value);
+
+    FirebaseFirestore.instance
+        .collection('user_habits')
+        .doc('userId-today')
+        .set({
+      'userId': userId,
+      'date': today,
+      'habits': habits,
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Track Eco Habits")),
+      body: ListView(
+        children: habits.entries.map((entry) {
+          return CheckboxListTile(
+            title: Text(entry.key.replaceAll('_', ' ').toUpperCase()),
+            value: entry.value,
+            onChanged: (val) => updateHabit(entry.key, val!),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
